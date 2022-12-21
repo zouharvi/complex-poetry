@@ -24,9 +24,23 @@ for line in data:
 is_translation = "translation" in args.dataset
 
 if is_translation:
-    plt.figure(figsize=(9, 2.5))
+    plt.figure(figsize=(6.5, 1.9))
 else:
-    plt.figure(figsize=(9, 3.5))
+    plt.figure(figsize=(8, 3.3))
+
+PRETTY_NAME = {
+    "human": "Human",
+    "bert2bert": "System 3",
+    "fair_wmt19": "System 1",
+    "helsinki": "System 2",
+}
+
+def process_name(name):
+    if name in PRETTY_NAME:
+        return PRETTY_NAME[name]
+    else:
+        name = " ".join([x.title() for x in name.split()])
+        return name
 
 GENRE_COLORS = {
     "prose": fig_utils.COLORS[0],
@@ -47,7 +61,7 @@ for key, plot_id, plot_title in zip(
 ):
     plt.subplot(plot_id)
     data_local = [
-        (g, k, np.average([x[key] for x in v if x[key] != 0 and not np.isnan(x[key])]))
+        (g, k, np.average([x[key] for x in v if x[key] > 1 and not np.isnan(x[key])]))
         for (g, k), v in data_collated.items()
     ]
 
@@ -69,7 +83,10 @@ for key, plot_id, plot_title in zip(
     if plot_id == 131:
         plt.yticks(
             YTICKS,
-            [x[1] for x in data_local],
+            [
+                process_name(x[1])
+                for x in data_local
+            ],
         )
     else:
         plt.yticks([], [])
@@ -79,5 +96,5 @@ for key, plot_id, plot_title in zip(
     
 
 plt.tight_layout()
-plt.show()
 plt.savefig(args.dataset.replace("data/", "computed/").replace(".jsonl", ".pdf"))
+plt.show()

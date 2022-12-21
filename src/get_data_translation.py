@@ -6,7 +6,7 @@ import tqdm
 
 DEVICE = "cuda"
 
-data = load_dataset("tatoeba", lang1="de", lang2="en")["train"]["translation"][:250]
+data = load_dataset("tatoeba", lang1="de", lang2="en")["train"]["translation"][:2000]
 data_new = []
 
 class HelsinkiWrap:
