@@ -1,5 +1,6 @@
 # added by zouharvi
 /data
+/computed
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
